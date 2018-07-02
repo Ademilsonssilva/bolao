@@ -1,0 +1,23 @@
+	<?php 
+		include "entity/bashController.class.php";
+		include "entity/campaign.class.php";
+		include "entity/match.class.php";
+		include "entity/player.class.php";
+		//include "entity/baseEntity.class.php";
+		
+		$connection_errors = [];
+	
+		/************ DB *************/
+		$driver = "driver"; 
+		$host 	= "host";
+		$db 	= "db";
+		$user 	= "user";
+		$pwd 	= "pwd";
+
+		try {
+			$conn = new PDO("{$driver}:host={$host};dbname={$db}", $user, $pwd);
+			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		} catch(PDOException $e) {
+			$connection_errors[] = $e->getMessage();
+		}
+		/*****************************/
