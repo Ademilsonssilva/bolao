@@ -86,9 +86,36 @@ class Player extends BaseEntity
 			$score["match"] = $linha["id_jogo"];
 			$score["score_team1"] = $linha["placar_time1"];
 			$score["score_team2"] = $linha["placar_time2"];
+
+			$score["winner"] = ($score["score_team1"] > $score["score_team2"] ? "team1" : "team2");
+
 			$scores[$linha["id_jogo"]] = $score;
 		}		
 
 		$this->scores =  $scores;
+	}
+
+	function calculatePoints($definedMatches)
+	{
+		$points = 0;
+		foreach($definedMatches as $key => $match ){
+			if (isset($this->scores[$key])) {
+				if ($match["winner"] == $this->scores[$key]["winner"]) {
+					if (
+						$match["score_team1"] == $this->scores[$key]["score_team1"] &&
+						$match["score_team2"] == $this->scores[$key]["score_team2"]
+					) {
+						$points += 3;
+					}
+					else {
+						$points += 1;
+					}
+				}
+			}
+		}
+		return [
+			"player" => $this->name, 
+			"points" => $points,
+		];
 	}
 }

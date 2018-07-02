@@ -190,6 +190,8 @@ while ($bash->applicationRunning)  {
 			$campaign_id = $campaigns->campaignSelector($bash);
 
 			if (array_key_exists($campaign_id, $campaigns->getAllCampaigns())) {
+				$bash->breakLine();
+				
 				$campaign = new Campaign($campaign_id);
 
 				$players = new Player();
@@ -197,14 +199,24 @@ while ($bash->applicationRunning)  {
 
 				$matches = new Match();
 				$campaign->getAllDefinedMatches();
-				var_dump($campaign->definedMatches);
 
-				// foreach ($arr_players as $player) {
+				$pointsByPlayer = [];
+				foreach ($arr_players as $player) {
 
-				// 	$player->getAllScores();
+					$player->getAllScores();
+					$pointsByPlayer[] = $player->calculatePoints($campaign->definedMatches);
 
+					sortArrayByPlayerPoints($pointsByPlayer);
 					
-				// }
+				}
+
+				foreach($pointsByPlayer as $key => $value) {
+					$bash->showMessage( $key+1 . " - {$value['player']} - {$value['points']} pontos", false);
+				}
+
+				$bash->breakLine();
+				$bash->breakLine();
+
 			}
 			else {
 				$bash->showMessage("## CAMPANHA SELECIONADA NAO EXISTE! ##");

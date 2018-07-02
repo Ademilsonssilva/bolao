@@ -1,8 +1,10 @@
+DROP TABLE IF EXISTS campanha;
 CREATE TABLE campanha (
 	id SERIAL PRIMARY KEY,
 	descricao VARCHAR (255)
 );
 	
+DROP TABLE IF EXISTS jogo;
 CREATE TABLE jogo (
 	id SERIAL PRIMARY KEY,
 	time1 VARCHAR (255),
@@ -10,18 +12,18 @@ CREATE TABLE jogo (
 	campanha INTEGER NOT NULL
 );
 
+DROP TABLE IF EXISTS placar;
 CREATE TABLE placar (
 	id SERIAL PRIMARY KEY,
-	jogo_id INTEGER,
+	id_jogo INTEGER,
 	placar_time1 INTEGER,
 	placar_time2 INTEGER,
 	id_jogador INTEGER
 );
 
+DROP TABLE IF EXISTS jogador;
 CREATE TABLE jogador (
 	id SERIAL PRIMARY KEY,
 	nome VARCHAR (255),
 	campanha INTEGER
 );
-
-ALTER TABLE placar RENAME COLUMN jogo_id to id_jogo;

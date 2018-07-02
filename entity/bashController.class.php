@@ -13,6 +13,8 @@ class BashController
 
 	function showIndex()
 	{
+		$this->showBoxMessage("ESCOLHA UMA ACAO");
+
 		echo "# 1 - ADICIONAR CAMPANHA ". PHP_EOL;
 		echo "# 2 - ADICIONAR JOGO ". PHP_EOL;
 		echo "# 3 - ADICIONAR PARTICIPANTES ". PHP_EOL;
