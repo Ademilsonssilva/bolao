@@ -18,6 +18,7 @@ class BashController
 		echo "# 3 - ADICIONAR PARTICIPANTES ". PHP_EOL;
 		echo "# 4 - ADICIONAR APOSTAS ". PHP_EOL;
 		echo "# 5 - INSERIR RESULTADO DE JOGO ". PHP_EOL;
+		echo "# 6 - VERIFICAR LIDERANCA ". PHP_EOL;
 		echo "# 0 - SAIR ". PHP_EOL;
 	}
 
@@ -55,8 +56,6 @@ class BashController
 			$this->breakLine();
 		}
 	}
-
-
 
 	function breakLine()
 	{

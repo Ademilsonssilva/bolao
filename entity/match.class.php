@@ -20,9 +20,9 @@ class Match extends BaseEntity
 			$res = $this->conn->query(" SELECT * FROM jogo WHERE id = $id");
 			$m = $res->fetch(\PDO::FETCH_ASSOC);
 			$this->id = $m["id"];
-			$this->team1 = $c["time1"];
-			$this->team2 = $c["time2"];
-			$this->campaign = new Campaign($c["campaign"]);
+			$this->team1 = $m["time1"];
+			$this->team2 = $m["time2"];
+			$this->campaign = new Campaign($m["campanha"]);
 		}
 	}
 
@@ -43,9 +43,14 @@ class Match extends BaseEntity
 		}
 	}
 
-	function getAllMatches()
+	function getAllMatches($campaign = null)
 	{
-		$res = $this->conn->query(" SELECT * FROM jogo ");
+		$sql = " SELECT * FROM jogo ";
+		if ($campaign != null) {
+			$sql .= " WHERE campanha = {$campaign} ";
+		}
+
+		$res = $this->conn->query($sql);
 
 		$matches = [];
 		while ($linha = $res->fetch(\PDO::FETCH_ASSOC)) {
@@ -57,6 +62,21 @@ class Match extends BaseEntity
 			$matches[$m->id] = $m;
 		}		
 
-		return $m;
+		return $matches;
 	}
+
+	function matchSelector($bash, $campaign = null)
+	{
+		$arr_matches = $this->getAllMatches($campaign);
+
+		$bash->showMessage("JOGOS:");
+
+		foreach($arr_matches as $match) {
+			$bash->showMessage("{$match->id} - {$match->team1} X {$match->team2} ", false);
+		}
+
+		$match_id = $bash->getUserChoice("Escolha o jogo desejado: ");
+		return $match_id;
+	}
+
 }

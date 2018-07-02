@@ -73,4 +73,22 @@ class Player extends BaseEntity
 		$player_id = $bash->getUserChoice("Escolha o participante desejado: ");
 		return $player_id;
 	}
+
+	function getAllScores()
+	{
+		$sql = " SELECT * FROM placar WHERE id_jogador = {$this->id}";
+
+		$res = $this->conn->query($sql);
+
+		$scores = [];
+		while ($linha = $res->fetch(\PDO::FETCH_ASSOC)) {
+			$score["id"] = $linha["id"];
+			$score["match"] = $linha["id_jogo"];
+			$score["score_team1"] = $linha["placar_time1"];
+			$score["score_team2"] = $linha["placar_time2"];
+			$scores[$linha["id_jogo"]] = $score;
+		}		
+
+		$this->scores =  $scores;
+	}
 }

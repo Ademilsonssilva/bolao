@@ -63,4 +63,25 @@ class Campaign extends BaseEntity
 		$campaign_id = $bash->getUserChoice("Escolha a campanha desejada: ");
 		return $campaign_id;
 	}
+
+	function getAllDefinedMatches()
+	{
+		$sql  = " SELECT * FROM jogo j ";
+		$sql .= " INNER JOIN placar p ON j.id = p.id_jogo AND p.id_jogador IS NULL ";
+		$sql .= " WHERE j.campanha = {$this->id}";
+
+		$res = $this->conn->query($sql);
+
+		$matches = [];
+		while ($linha = $res->fetch(\PDO::FETCH_ASSOC)) {
+			$match["match"] = $linha["id_jogo"];
+			$match["team1"] = $linha["time1"];
+			$match["team2"] = $linha["time2"];
+			$match["score_team1"] = $linha["placar_time1"];
+			$match["score_team2"] = $linha["placar_time2"];
+			$matches[$linha["id_jogo"]] = $match;
+		}		
+
+		$this->definedMatches =  $matches;
+	}
 }
