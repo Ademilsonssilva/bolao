@@ -244,7 +244,7 @@ while ($bash->applicationRunning)  {
 						$bash->showMessage( "Jogo {$match->team1} X {$match->team2} - {$campaign->definedMatches[$match->id]['score_team1']} X {$campaign->definedMatches[$match->id]['score_team2']}", false);
 					}
 					else {
-						$bash->showMessage( "Jogo {$match->team1} X {$match->team1} - PENDENTE", false);
+						$bash->showMessage( "Jogo {$match->team1} X {$match->team2} - PENDENTE", false);
 					}
 				}
 			}

@@ -3,6 +3,8 @@
 		include "entity/campaign.class.php";
 		include "entity/match.class.php";
 		include "entity/player.class.php";
+		include "entity/score.class.php";
+		include "utils.php";
 		//include "entity/baseEntity.class.php";
 		
 		$connection_errors = [];
