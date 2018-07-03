@@ -21,6 +21,8 @@ class BashController
 		echo "# 4 - ADICIONAR APOSTAS ". PHP_EOL;
 		echo "# 5 - INSERIR RESULTADO DE JOGO ". PHP_EOL;
 		echo "# 6 - VERIFICAR LIDERANCA ". PHP_EOL;
+		echo "# 7 - VERIFICAR RESULTADO DOS JOGOS ". PHP_EOL;
+		echo "# 8 - VERIFICAR APOSTAS DO JOGADOR ". PHP_EOL;
 		echo "# 0 - SAIR ". PHP_EOL;
 	}
 

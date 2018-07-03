@@ -15,7 +15,7 @@ $bash = new BashController();
 while ($bash->applicationRunning)  {
 	$bash->showIndex();
 	$action = $bash->getUserChoice();	
-	if (in_array($action, [0,1,2,3,4,5,6,])){
+	if (in_array($action, [0,1,2,3,4,5,6,7,8,])){
 		
 		if ($action == "0") {
 			$bash->applicationRunning = false;
@@ -191,7 +191,7 @@ while ($bash->applicationRunning)  {
 
 			if (array_key_exists($campaign_id, $campaigns->getAllCampaigns())) {
 				$bash->breakLine();
-				
+
 				$campaign = new Campaign($campaign_id);
 
 				$players = new Player();
@@ -217,6 +217,112 @@ while ($bash->applicationRunning)  {
 				$bash->breakLine();
 				$bash->breakLine();
 
+			}
+			else {
+				$bash->showMessage("## CAMPANHA SELECIONADA NAO EXISTE! ##");
+			}
+		}
+
+		if ($action == 7) {
+			$bash->showBoxMessage("VERIFICAR RESULTADO DOS JOGOS");
+
+			$campaigns = new Campaign();
+			
+			$campaign_id = $campaigns->campaignSelector($bash);
+
+			if (array_key_exists($campaign_id, $campaigns->getAllCampaigns())) {
+				$bash->breakLine();
+
+				$campaign = new Campaign($campaign_id);
+				$campaign->getAllDefinedMatches();
+
+				$m = new Match();
+				$matches = $m->getAllMatches($campaign_id);
+
+				foreach ($matches as $match) {
+					if (array_key_exists($match->id, $campaign->definedMatches)) {
+						$bash->showMessage( "Jogo {$match->team1} X {$match->team2} - {$campaign->definedMatches[$match->id]['score_team1']} X {$campaign->definedMatches[$match->id]['score_team2']}", false);
+					}
+					else {
+						$bash->showMessage( "Jogo {$match->team1} X {$match->team1} - PENDENTE", false);
+					}
+				}
+			}
+			else {
+				$bash->showMessage("## CAMPANHA SELECIONADA NAO EXISTE! ##");
+			}
+		}
+
+		if ($action == 8) {
+			$bash->showBoxMessage("VERIFICAR APOSTAS DO JOGADOR");
+
+			$campaigns = new Campaign();
+			
+			$campaign_id = $campaigns->campaignSelector($bash);
+
+			if (array_key_exists($campaign_id, $campaigns->getAllCampaigns())) {
+				$campaign = new Campaign($campaign_id);
+				$campaign->getAllDefinedMatches();
+				$players = new Player();
+
+				$player_id = $players->playerSelector($bash, $campaign_id);
+
+				if (array_key_exists($player_id, $players->getAllPlayers())) {
+					$player = new Player($player_id);
+					$player->getAllScores();
+					$bash->showBoxMessage("APOSTAS DE {$player->name}");
+
+					$m = new Match();
+					$matches = $m->getAllMatches();
+
+					foreach ($matches as $key => $match) {
+						$bash->showMessage("Jogo {$match->team1} X {$match->team2}:", false);
+
+						if (array_key_exists($match->id, $campaign->definedMatches)) {
+							$result = "{$campaign->definedMatches[$match->id]['score_team1']} X {$campaign->definedMatches[$match->id]['score_team2']}";
+							$definedMatch = true;
+						}
+						else {
+							$result = "PENDENTE";
+							$definedMatch = false;
+						}
+						$bash->showMessage("       PLACAR DO JOGO: {$result}", false);
+
+						if (array_key_exists($match->id, $player->scores)) {
+							$result = "{$player->scores[$match->id]['score_team1']} X {$player->scores[$match->id]['score_team2']}";
+						}
+						else {
+							$result = "PENDENTE";
+						}
+						$bash->showMessage("       APOSTA DO PARTICIPANTE: {$result}", false);
+
+						if ($definedMatch) {
+							if ($player->scores[$match->id]["winner"] == $campaign->definedMatches[$match->id]["winner"]) {
+								if (
+									$player->scores[$match->id]["score_team1"] == $campaign->definedMatches[$match->id]["score_team1"] &&
+									$player->scores[$match->id]["score_team2"] == $campaign->definedMatches[$match->id]["score_team2"]
+								) {
+									$result = "PLACAR CORRETO (+3 pontos)";
+								}
+								else {
+									$result = "VENCEDOR CORRETO (+1 ponto)";
+								}
+							}
+							else {
+								$result = "ERRADO (0 pontos)";
+							}
+						}
+						else {
+							$result = "PENDENTE";
+						}
+
+						$bash->showMessage("       RESULTADO DA APOSTA: {$result}", false);
+					}
+
+				}
+				else {
+					$bash->showMessage("## JOGADOR SELECIONADO NAO EXISTE! ##");
+				}
 			}
 			else {
 				$bash->showMessage("## CAMPANHA SELECIONADA NAO EXISTE! ##");
