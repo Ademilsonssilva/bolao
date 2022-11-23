@@ -80,7 +80,7 @@ class Campaign extends BaseEntity
 			$match["score_team1"] = $linha["placar_time1"];
 			$match["score_team2"] = $linha["placar_time2"];
 
-			$match["winner"] = ($match["score_team1"] > $match["score_team2"] ? "team1" : "team2");
+			$match["winner"] = ($match["score_team1"] > $match["score_team2"] ? "team1" : ($match["score_team1"] == $match["score_team2"] ? "tie" : "team2"));
 		
 			$matches[$linha["id_jogo"]] = $match;
 		}		

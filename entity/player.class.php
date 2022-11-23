@@ -87,7 +87,7 @@ class Player extends BaseEntity
 			$score["score_team1"] = $linha["placar_time1"];
 			$score["score_team2"] = $linha["placar_time2"];
 
-			$score["winner"] = ($score["score_team1"] > $score["score_team2"] ? "team1" : "team2");
+			$score["winner"] = ($score["score_team1"] > $score["score_team2"] ? "team1" : ($score['score_team1'] == $score['score_team2'] ? "tie" : "team2"));
 
 			$scores[$linha["id_jogo"]] = $score;
 		}		
